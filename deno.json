@@ -1,0 +1,19 @@
+{
+    "importMap": "./.datex-cache/importmap.lock.json",
+    "compilerOptions": {
+        "jsx": "react-jsx",
+        "jsxImportSource": "jusix",
+        "lib": [
+            "deno.window",
+            "dom"
+        ]
+    },
+    "_publicImportMap": "./importmap.json",
+    "lint": {
+        "rules": {
+            "exclude": [
+                "jsx-key"
+            ]
+        }
+    }
+}
