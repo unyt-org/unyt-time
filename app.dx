@@ -1,2 +1,13 @@
 name: "unyt-time",
-description: "A simple UIX app project"
+description: "A simple UIX app project";
+
+plugin git_deploy (
+    prod: {
+        branch: 'main',
+        on: 'push',
+        tests: false,
+        secrets: [
+            'HOST_TOKEN'
+        ]
+    }
+)
