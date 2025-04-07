@@ -1,0 +1,13 @@
+use stage from #public.uix;
+
+endpoint: stage {
+    prod: @+unyt-time
+},
+
+location: stage {
+    prod: @+unyt-private-1
+},
+
+domain: stage {
+    prod: 'time.unyt.org'
+};
