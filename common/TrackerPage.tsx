@@ -12,6 +12,7 @@ export const Main = template (() =>
 			<p class="text-amber-50">Add Manual Entry</p>
 		</div>
 
+
 	</div>
   );
   
