@@ -17,6 +17,6 @@ jobs:
         with:
           submodules: recursive
       - name: Setup Deno
-        uses: "denoland/setup-deno@v1"
+        uses: "denoland/setup-deno@v2"
       - name: Deploy UIX App
         run: "deno run --importmap ./importmap.json -Aqr https://cdn.unyt.org/uix@0.4.x/run.ts --stage prod --detach --env HOST_TOKEN=$HOST_TOKEN"

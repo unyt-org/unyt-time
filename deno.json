@@ -1,4 +1,5 @@
 {
+    "_publicImportMap": "./importmap.json",
     "importMap": "./.datex-cache/importmap.lock.json",
     "compilerOptions": {
         "jsx": "react-jsx",
@@ -8,7 +9,6 @@
             "dom"
         ]
     },
-    "_publicImportMap": "./importmap.json",
     "lint": {
         "rules": {
             "exclude": [
