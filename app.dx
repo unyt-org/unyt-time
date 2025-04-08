@@ -1,5 +1,6 @@
 name: "unyt-time",
-description: "A simple UIX app project";
+description: "A simple UIX app project",
+experimental_features: ["sqlite-storage"];
 
 plugin git_deploy (
     prod: {

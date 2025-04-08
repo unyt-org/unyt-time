@@ -1,5 +1,11 @@
 import { template } from "uix/html/template.ts";
 import { Header } from "common/components/header.tsx";
+import { Tracker } from "backend/Tracker.ts";
+import { TimeEntry } from "common/types.ts";
+
+ 
+await Tracker.addEntry("2", TimeEntry({task:"homework", startTime:new Date, endTime:new Date, tags:["homework"]}))
+console.log(await Tracker.getEntries("2"));
 
 export const Main = template (() => 
 	<div>
