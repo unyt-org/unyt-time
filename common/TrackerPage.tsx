@@ -1,6 +1,6 @@
 import { template } from "uix/html/template.ts";
 import { Tracker } from "backend/Tracker.ts";
-import { TimeEntry, TimeTracker } from "common/types.ts";
+import { TimeEntry } from "common/types.ts";
 import { Component } from "uix/components/Component.ts";
  
 // await Tracker.addEntry("2", TimeEntry({task:"homework", startTime:Date.now(), endTime:0, tags:["homework"]}))
@@ -13,19 +13,19 @@ import { Component } from "uix/components/Component.ts";
 	return <div class="bg-amber-50">
     <h1 class="text-2xl font-bold text-black">Time Tracker</h1>
 	<div class="flex gap-4 my-4">
-		<button onclick:frontend={() => this.startNewTimer()}
+		<button type="button" onclick:frontend={() => this.startNewTimer()}
 			class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-xl shadow transition duration-200"
 			disabled={this.hasActiveTimer}>
 				Start New Timer
 		</button>
-		<button onclick:frontend={() => this.stopCurrentTimer()}
+		<button type="button" onclick:frontend={() => this.stopCurrentTimer()}
 			class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl shadow transition duration-200"
 			disabled={!this.hasActiveTimer}>
 				Stop Current Timer
 		</button>
 	</div>
 	<div class="">
-        {always(() => this.hasActiveTimer ? "Tracking time..." : "Not running")}
+		{this.hasActiveTimer ? "Tracking time..." : "Not running"}
 	</div>
 	<div class="bg-amber-50 p-3 rounded-lg shadow">
 		<div class="">
@@ -35,7 +35,7 @@ import { Component } from "uix/components/Component.ts";
 						{entry.task} - {new Date(entry.startTime).toLocaleTimeString()}
 						{entry.endTime && ` - ${new Date(entry.endTime).toLocaleTimeString()}`}
 
-						<button onclick:frontend={() => this.removeEntry(entry)}
+						<button type="button" onclick:frontend={() => this.removeEntry(entry)}
 						class="px-3 py-1 bg-red-500 hover:bg-red-300 rounded text-sm">
 							Delete
 						</button>
