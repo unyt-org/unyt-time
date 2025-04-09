@@ -1,8 +1,8 @@
 import { Entrypoint } from "uix/providers/entrypoints.ts";
 import "common/theme.ts";
 
-import { Main } from "common/TrackerPage.tsx";
+import { TrackPage } from "common/TrackerPage.tsx";
 export default {
-  '/': <Main></Main>
+  '/': <TrackPage identifier="2"></TrackPage>
 
 } satisfies Entrypoint;

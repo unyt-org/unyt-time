@@ -1,4 +1,3 @@
-// import "common/theme.ts";
 // import "common/TrackerPage.tsx"
 // import "./Tracker.eternal.ts"
 // import { Entrypoint } from "uix/providers/entrypoint.ts";
@@ -8,4 +7,4 @@
 // 	"*": null,
 //   } satisfies Entrypoint;
 
-import "common/types.ts";
+import "common/theme.ts";

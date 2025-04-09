@@ -1,14 +1,17 @@
 import { inferType, StorageSet } from "datex-core-legacy/datex_all.ts";
 
-export const TimeEntry = struct({
+
+export const TimeEntry = struct("TimeEntry",{
 	task: string,
-	startTime: Date,
-	endTime: Date,
+	startTime: number,
+	endTime: number,
 	tags: Array<string>,
+	
 })
 export type TimeEntry = inferType<typeof TimeEntry>
 
-export const TimeTracker = struct({
+export const TimeTracker = struct("TimeTracker", {
+	
 	title: string,
 	entries: StorageSet<TimeEntry>
 })
