@@ -1,6 +1,7 @@
 import { StorageSet } from "datex-core-legacy/types/storage-set.ts";
 import { trackerStorage } from "./Tracker.eternal.ts";
 import { TimeEntry, TimeTracker } from "common/types.ts";
+import { MatchCondition } from "datex-core-legacy/datex_all.ts";
 
 
 export class Tracker {
@@ -17,11 +18,36 @@ export class Tracker {
 
 	static async getEntries(id: string): Promise<Set<TimeEntry>> {
 		const tracker = await this.get(id);
-		const trackerEntriesArray = await tracker.entries.valuesArray();
+		
+		return asyncAlways (async() => {
+			const trackerEntriesArray = await tracker.entries.valuesArray();
+			
+			return new Set(trackerEntriesArray.toSorted((a,b) => b.startTime - a.startTime));
+		})
 
-		return new Set(trackerEntriesArray.toSorted((a,b) => b.startTime - a.startTime));
+	}
+
+	static async getEntriesByDate(id: string, date: Ref<number>): Promise<Set<TimeEntry>> {
+		const tracker = await this.get(id);
+       
+		return asyncAlways (async() => {
+			const startOfDay = new Date(date);
+			const endOfDay = new Date(date);
+	
+			startOfDay.setHours(0,0,0,0);
+			endOfDay.setHours(23, 59, 59, 999);
+	
+			const filtered = await tracker.entries.match({
+				startTime: MatchCondition.between(startOfDay.getTime(), endOfDay.getTime())
+			},
+			{ sortBy: "startTime"},
+			TimeEntry
+		);
+			return filtered;
+		})
 		
 	}
+
 
 	static async addEntry(id: string, entry: TimeEntry) {
 		const tracker = await this.get(id);
@@ -64,4 +90,10 @@ export class Tracker {
         runningEntry.endTime = Date.now();
     }
 	
+	static async createTimeEntry(entry: TimeEntry) {
+		const newEntry: TimeEntry = TimeEntry({
+			...entry
+		});
+		return newEntry
+	}
 }
