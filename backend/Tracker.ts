@@ -4,6 +4,7 @@ import { TimeEntry, TimeTracker } from "common/types.ts";
 import { MatchCondition } from "datex-core-legacy/datex_all.ts";
 
 
+
 export class Tracker {
 	static async get(id: string): Promise<TimeTracker> {
 		if(!await trackerStorage.has(id)) {
@@ -72,10 +73,18 @@ export class Tracker {
 		existingEntry.endTime = Date.now();
 	}
 
-	static async getRunningEntry(id: string): Promise<TimeEntry | undefined> {
+	// static async getRunningEntry(id: string): Promise<TimeEntry | undefined> {
+	// 	const tracker = await this.get(id);
+	// 	const entries = await tracker.entries.valuesArray();
+	// 	return entries.find(e => !e.endTime || e.endTime === 0);
+	// }
+
+	static async isRunningEntry(id: string): Promise<boolean> {
 		const tracker = await this.get(id);
 		const entries = await tracker.entries.valuesArray();
-		return entries.find(e => !e.endTime || e.endTime === 0);
+		const isRunning = entries.find(e => !e.endTime || e.endTime === 0) != null;
+
+		return isRunning;
 	}
 
 	static async stopEntry(id: string) {

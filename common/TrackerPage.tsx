@@ -2,15 +2,22 @@ import { template } from "uix/html/template.ts";
 import { Tracker } from "backend/Tracker.ts";
 import { TimeEntry } from "common/types.ts";
 import { Component } from "uix/components/Component.ts";
+import { trackerStorage } from "backend/Tracker.eternal.ts";
  
 @template(async function({identifier}) {
 	const filterDate = $(Date.now()); 
 	this.entries = await Tracker.getEntriesByDate(identifier, filterDate);
+	// this.entries = await Tracker.getEntries(identifier);
+	this.hasActiveTimer = await Tracker.isRunningEntry(identifier);
 
-	console.log(this.entries);
-	console.log(id);
 	return <div class="max-w-screen min-h-screen mx-auto p-8 font-sans text-gray-200 bg-gray-800 bg-opacity-80 shadow-lg border border-gray-700">
     <h1 class="text-3xl text-center text-blue-400 mb-8 font-bold text-shadow">Time Tracker</h1>
+	<button 
+                onclick:frontend={() => this.logout()}
+                class="absolute top-4 right-4 px-4 py-2 bg-red-600 hover:bg-red-900 text-white rounded-lg shadow transition"
+            >
+                Logout
+            </button>
 	<div class="flex gap-4 mb-6 justify-center">
 		<button type="button" onclick:frontend={() => this.startNewTimer()}
 			class="px-5 py-2 bg-green-500 hover:bg-green-600 text-white rounded-xl shadow transition duration-200"
@@ -79,8 +86,13 @@ export class TrackPage extends Component<{
 	entries!: Set<TimeEntry>
 
 	@property
-	hasActiveTimer = false;
-	
+	hasActiveTimer!: boolean
+
+	private logout() {
+        localStorage.removeItem("identifier");
+        location.href = "/"; 
+    }
+
 	private async addManualEntry() {
 		const taskName = prompt("Enter task name:");
 		if (taskName === null) return;
@@ -88,6 +100,10 @@ export class TrackPage extends Component<{
 		if (startTime === null) return;
 		const endTime = prompt("Enter end time (YYYY-MM-DD HH:MM):");
 		if (endTime === null) return;
+		if (startTime >= endTime) {
+			alert("Start time must be before end time.");
+			return;
+		}
 		const anyTags = prompt("Enter tags (comma separated):");
 		if (anyTags === null) return;
 
@@ -105,8 +121,12 @@ export class TrackPage extends Component<{
             alert("A Timer is already running.");
             return;
         }
-		const taskName = prompt("Enter task name:") || "Untitled Task";
-		if (taskName === null) return;
+		let taskName = prompt("Enter task name:");
+		if (taskName === null) {
+			return;
+		} else {
+			taskName = "Untitled Task";
+		}
 		const anyTags = prompt("Enter Tag (comma separated):");
 		if (anyTags === null) return;
 		
