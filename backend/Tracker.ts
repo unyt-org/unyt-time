@@ -99,10 +99,17 @@ export class Tracker {
         runningEntry.endTime = Date.now();
     }
 	
-	static async createTimeEntry(entry: TimeEntry) {
+	static createTimeEntry(entry: TimeEntry) {
 		const newEntry: TimeEntry = TimeEntry({
 			...entry
 		});
 		return newEntry
 	}
+
+	private getDuration(entry: TimeEntry) {
+		return entry.endTime && entry.endTime > 0
+			? entry.endTime - entry.startTime
+			: Date.now() - entry.startTime;
+	}
+	
 }

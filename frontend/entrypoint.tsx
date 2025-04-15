@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 import { Entrypoint } from "uix/providers/entrypoints.ts";
 import "common/theme.ts";
 import { FrontPage } from "common/FrontPage.tsx"
