@@ -280,26 +280,31 @@ export class TrackPage extends Component<{
     }
 
 	private async getLast7Days(identifier: string) {
-        const days = [];
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        
-        for (let i = 6; i >= 0; i--) {
-            const date = new Date(today);
-            date.setDate(date.getDate() - i);
-            
-            const entries = await Tracker.getEntriesByDate(identifier, $(date.getTime()));
-            const totalDuration = calculateTotalDuration(entries);
-            
-            days.push({
-                date: date.getTime(),
-                totalDuration,
-                isToday: i === 0
-            });
-        }
-        
-        return days;
-    }
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+		
+
+		const dates = Array.from({length: 7}, (_, i) => {
+			const date = new Date(today);
+			date.setDate(date.getDate() - (6 - i)); 
+			return date;
+		});
+	
+		const entriesPromises = dates.map(date => 
+			Tracker.getEntriesByDate(identifier, $(date.getTime()))
+		);
+		
+		const allEntries = await Promise.all(entriesPromises);
+		
+		return dates.map((date, i) => {
+			const entries = allEntries[i];
+			return {
+				date: date.getTime(),
+				totalDuration: calculateTotalDuration(entries),
+				isToday: i === 6 
+			};
+		});
+	}
 
 
 	private async filterByDate(date: number) {
