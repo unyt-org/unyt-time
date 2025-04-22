@@ -11,7 +11,16 @@
   }
 
   @layer utilities {
-	:popover-open::backdrop {
-	  @apply backdrop-blur-sm backdrop-brightness-75;
+	/* :popover-open::backdrop {
+	  @apply backdrop-blur-sm backdrop-brightness-75 pointer-events-none;
+	} */
+	
+	.popover-blocker {
+	  @apply fixed inset-0 z-[9999] hidden backdrop-blur-sm bg-black/30 pointer-events-auto;
+	}
+	
+	#timer-popover:popover-open ~ #blocker,
+	#manual-popover:popover-open ~ #blocker {
+	  @apply block;
 	}
   }
