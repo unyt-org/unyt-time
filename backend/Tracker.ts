@@ -35,9 +35,11 @@ export class Tracker {
 			const startOfDay = new Date(date);
 			const endOfDay = new Date(date);
 	
-			startOfDay.setHours(0,0,0,0);
-			endOfDay.setHours(23, 59, 59, 999);
+			startOfDay.setUTCHours(0,0,0,0);
+			endOfDay.setUTCHours(23, 59, 59, 999);
 	
+			console.log(startOfDay);
+			console.log(endOfDay);
 			const filtered = await tracker.entries.match({
 				startTime: MatchCondition.between(startOfDay.getTime(), endOfDay.getTime())
 			},

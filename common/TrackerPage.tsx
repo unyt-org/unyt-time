@@ -286,7 +286,7 @@ export class TrackPage extends Component<{
 			date.setDate(date.getDate() - (6 - i)); 
 			return date;
 		});
-	
+
 		const entriesPromises = dates.map(date => 
 			Tracker.getEntriesByDate(identifier, $(date.getTime()))
 		);
