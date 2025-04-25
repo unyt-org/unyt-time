@@ -37,10 +37,7 @@ import { formatDuration, calculateTotalDuration, getTotalDurationForSelectedDay 
 			<label for="task-input" name="task" class="block text-sm font-medium text-gray-300 mb-1">Task Name</label>
 			<input id="task-input" type="text" 
 				class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-md text-white"
-				oninput:frontend={(e: Event) => 
-					{
-						this.taskName = (e.target as HTMLInputElement).value
-					}}
+				value={this.taskName}
 				placeholder="Untitled Task" />
 		</div>
 		
@@ -48,7 +45,7 @@ import { formatDuration, calculateTotalDuration, getTotalDurationForSelectedDay 
 			<label for="tags-input" class="block text-sm font-medium text-gray-300 mb-1">Tags (comma separated)</label>
 			<input id="tags-input" type="text" 
 				class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-md text-white"
-				oninput:frontend={(e: Event) => this.tagsInput = (e.target as HTMLInputElement).value}
+				value={this.tagsInput}
 				placeholder="tag1, tag2, ..." />
 		</div>
 		
@@ -72,7 +69,7 @@ import { formatDuration, calculateTotalDuration, getTotalDurationForSelectedDay 
                     <label class="block text-sm font-medium text-gray-300 mb-1">Task Name</label>
                     <input type="text" name="task-manual" 
                         class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-md text-white"
-                        oninput:frontend={(e) => this.manualEntry.taskName = (e.target as HTMLInputElement).value}
+                        value={this.manualEntry.taskName}
                         placeholder="Task name" />
                 </div>
 
@@ -81,13 +78,13 @@ import { formatDuration, calculateTotalDuration, getTotalDurationForSelectedDay 
                         <label class="block text-sm font-medium text-gray-300 mb-1">Start Time</label>
                         <input type="datetime-local" name="start-timer"
                             class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-md text-white"
-                            oninput:frontend={(e) => this.manualEntry.startTime = (e.target as HTMLInputElement).value} />
+                            value={this.manualEntry.startTime} />
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-300 mb-1">End Time</label>
                         <input type="datetime-local" name="end-timer"
                             class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-md text-white"
-                            oninput:frontend={(e) => this.manualEntry.endTime = (e.target as HTMLInputElement).value} />
+                           value={this.manualEntry.endTime}/>
                     </div>
                 </div>
 
@@ -95,7 +92,7 @@ import { formatDuration, calculateTotalDuration, getTotalDurationForSelectedDay 
                     <label class="block text-sm font-medium text-gray-300 mb-1">Tags (comma separated)</label>
                     <input type="text" name="tags"
                         class="w-full px-3 py-2 bg-gray-600 border border-gray-500 rounded-md text-white"
-                        oninput:frontend={(e) => this.manualEntry.tags = (e.target as HTMLInputElement).value}
+                        value={this.manualEntry.tags}
                         placeholder="tag1, tag2, ..." />
                 </div>
             </div>
@@ -260,8 +257,8 @@ export class TrackPage extends Component<{
 	@property
     manualEntry = {
         taskName: "",
-        startTime: "",
-        endTime: "",
+        startTime: 0,
+        endTime: 0,
         tags: ""
     };
 
@@ -397,8 +394,8 @@ export class TrackPage extends Component<{
             return;
         }
 
-        const startDate = new Date(this.manualEntry.startTime);
-        const endDate = new Date(this.manualEntry.endTime);
+        const startDate = this.manualEntry.startTime;
+        const endDate = this.manualEntry.endTime;
 
         if (startDate >= endDate) {
             alert("Start time must be before end time");
@@ -408,8 +405,8 @@ export class TrackPage extends Component<{
         try {
             const newEntry: TimeEntry = await Tracker.createTimeEntry(TimeEntry({
                 task: this.manualEntry.taskName,
-                startTime: startDate.getTime(),
-                endTime: endDate.getTime(),
+                startTime: startDate,
+                endTime: endDate,
                 tags: this.manualEntry.tags ? this.manualEntry.tags.split(',').map(tag => tag.trim()) : []
             }));
 
@@ -417,8 +414,8 @@ export class TrackPage extends Component<{
             
             this.manualEntry = {
                 taskName: "",
-                startTime: "",
-                endTime: "",
+                startTime: 0,
+                endTime: 0,
                 tags: ""
             };
             (document.getElementById('manual-popover') as HTMLDivElement)?.hidePopover();
