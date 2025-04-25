@@ -277,9 +277,7 @@ export class TrackPage extends Component<{
     }
 
 	private async getLast7Days(identifier: string) {
-		const today = new Date();
-		today.setHours(0, 0, 0, 0);
-		
+		const today = new Date();	
 
 		const dates = Array.from({length: 7}, (_, i) => {
 			const date = new Date(today);
@@ -412,12 +410,11 @@ export class TrackPage extends Component<{
 
             await Tracker.addEntry(this.properties.identifier, newEntry);
             
-            this.manualEntry = {
-                taskName: "",
-                startTime: 0,
-                endTime: 0,
-                tags: ""
-            };
+            this.manualEntry.taskName = "";
+			this.manualEntry.startTime = 0;
+			this.manualEntry.endTime = 0;
+			this.manualEntry.tags = "";
+			
             (document.getElementById('manual-popover') as HTMLDivElement)?.hidePopover();
             
         } catch (e) {
